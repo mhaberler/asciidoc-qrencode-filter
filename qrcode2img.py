@@ -59,12 +59,9 @@ class Application():
         """Process commandline arguments"""
         global verbose
         parser = OptionParser(usage, version="%%prog %s" % __version__)
-        parser.add_option("-v", "--verbose", action="store_true",
-                          help="verbose output to stderr")
         parser.add_option("-o", "--outfile", help="Output file name")
-        parser.add_option("-s", "--scale", type=float, help="Image scale")
+        parser.add_option("-s", "--size", type=float, help="Image pixel size. default = 3")
         self.options, args = parser.parse_args()
-        verbose = self.options.verbose
         print_verbose("Runing filter script %s" % os.path.realpath(sys.argv[0]))
         if len(args) != 1:
             parser.error("Invalid number of arguments")
@@ -94,10 +91,8 @@ class Application():
             else:
                 infile = self.infile
             options = ""
-            if self.options.verbose:
-                options += " -v"
-            if self.options.scale:
-                options += " --scale %f" % self.options.scale
+            if self.options.size:
+                options += " -s %f" % self.options.size
             #systemcmd('zint -b 58 -i "%s" -o "%s" %s' % (
             #          infile, outfile, options))
 
